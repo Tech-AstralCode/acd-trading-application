@@ -5,12 +5,18 @@ using Application.Services;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration
+  .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+  .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true)
+  .AddJsonFile("appsettings.Development.local.json", optional: true, reloadOnChange: true)
+  .AddEnvironmentVariables();
 
 // Serilog
 Log.Logger = new LoggerConfiguration()
-.WriteTo.Console()
-.WriteTo.File("logs/web-.log", rollingInterval: RollingInterval.Day)
-.CreateLogger();
+  .Enrich.FromLogContext()
+  .WriteTo.Console()
+  .WriteTo.File("logs/web-.log", rollingInterval: RollingInterval.Day)
+  .CreateLogger();
 
 builder.Host.UseSerilog();
 
