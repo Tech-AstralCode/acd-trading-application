@@ -1,0 +1,78 @@
+{
+  "underlying": "NIFTY",
+  "time": "2025-09-23T09:25:00+05:30",
+  "rows": [
+    {
+      "symbol": "NIFTY25SEP25000CE",
+      "isCall": true,
+      "strike": 25000,
+      "expiry": "2025-09-25",
+      "ltp": 120.15,
+      "bid": 119.80,
+      "ask": 120.20,
+      "oi": 123450,
+      "oiChange": 2500,
+      "iv": 15.2
+    },
+    {
+      "symbol": "NIFTY25SEP25000PE",
+      "isCall": false,
+      "strike": 25000,
+      "expiry": "2025-09-25",
+      "ltp": 95.70,
+      "bid": 95.20,
+      "ask": 95.95,
+      "oi": 110230,
+      "oiChange": 2100,
+      "iv": 16.0
+    },
+    {
+      "symbol": "NIFTY25SEP25050CE",
+      "isCall": true,
+      "strike": 25050,
+      "expiry": "2025-09-25",
+      "ltp": 100.10,
+      "bid": 99.90,
+      "ask": 100.30,
+      "oi": 98000,
+      "oiChange": 1900,
+      "iv": 15.1
+    },
+    {
+      "symbol": "NIFTY25SEP25050PE",
+      "isCall": false,
+      "strike": 25050,
+      "expiry": "2025-09-25",
+      "ltp": 110.25,
+      "bid": 110.05,
+      "ask": 110.45,
+      "oi": 121000,
+      "oiChange": 2300,
+      "iv": 16.2
+    },
+    {
+      "symbol": "NIFTY25SEP25100CE",
+      "isCall": true,
+      "strike": 25100,
+      "expiry": "2025-09-25",
+      "ltp": 82.30,
+      "bid": 82.10,
+      "ask": 82.45,
+      "oi": 90500,
+      "oiChange": 1600,
+      "iv": 15.0
+    },
+    {
+      "symbol": "NIFTY25SEP25100PE",
+      "isCall": false,
+      "strike": 25100,
+      "expiry": "2025-09-25",
+      "ltp": 125.60,
+      "bid": 125.25,
+      "ask": 125.80,
+      "oi": 130500,
+      "oiChange": 2600,
+      "iv": 16.5
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+﻿@model AstralStocksPro.Models.ChainVm
+@{
+    //ViewData["Title"] = $"Chain — {Model.Underlying}";
+}
+<h3>Option Chain — @Model.Underlying</h3>
+<p class="text-secondary">As of @Model.Time.LocalDateTime — Estimated Spot: <strong>@Model.Spot</strong></p>
+<div class="table-responsive">
+    <table class="table table-sm align-middle">
+        <thead>
+            <tr>
+                <th>Strike</th>
+                <th class="call">CALL Bid</th>
+                <th class="call">CALL Ask</th>
+                <th class="call">CALL LTP</th>
+                <th class="call">CALL OI (Δ)</th>
+                <th class="put">PUT Bid</th>
+                <th class="put">PUT Ask</th>
+                <th class="put">PUT LTP</th>
+                <th class="put">PUT OI (Δ)</th>
+                <th>Expiry</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (StrikeRowVm sr in Model.Strikes)
+            {
+                var cls = sr.IsAtm ? " table-success atm-row" : string.Empty;
+                <tr class="@cls">
+                    <td><strong>@sr.Strike</strong></td>
+                    <td>@(sr.Call?.Bid.ToString("0.00") ?? "-")</td>
+                    <td>@(sr.Call?.Ask.ToString("0.00") ?? "-")</td>
+                    <td>@(sr.Call?.Ltp.ToString("0.00") ?? "-")</td>
+                    <td>@(sr.Call is null ? "-" : $"{sr.Call.Oi} ({sr.Call.OiChange:+#;-#;0})")</td>
+
+                    <td>@(sr.Put?.Bid.ToString("0.00") ?? "-")</td>
+                    <td>@(sr.Put?.Ask.ToString("0.00") ?? "-")</td>
+                    <td>@(sr.Put?.Ltp.ToString("0.00") ?? "-")</td>
+                    <td>@(sr.Put is null ? "-" : $"{sr.Put.Oi} ({sr.Put.OiChange:+#;-#;0})")</td>
+
+                    <td>@sr.Expiry.ToString("yyyy-MM-dd")</td>
+                    <td>
+                        @if (sr.Call is not null)
+                        {
+                            <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#simModal"
+                                data-symbol="@sr.Call.Symbol" data-side="CALL" data-price="@sr.Call.Ask"
+                                data-strike="@sr.Strike">Simulate Call</button>
+                        }
+                        @if (sr.Put is not null)
+                        {
+                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#simModal"
+                                data-symbol="@sr.Put.Symbol" data-side="PUT" data-price="@sr.Put.Ask"
+                                data-strike="@sr.Strike">Simulate Put</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<!-- Simulate Modal -->
+<div class="modal fade" id="simModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Simulate Trade</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="simBody">
+                    <div>Symbol: <span id="simSymbol"></span></div>
+                    <div>Side: <span id="simSide"></span></div>
+                    <div>Ask: ₹<span id="simPrice"></span></div>
+                    <hr />
+                    <label class="form-label">Qty (lots)</label>
+                    <input type="number" id="simQty" class="form-control" value="1" min="1" />
+                    <div class="mt-2">Est. SL &#64; 25%: ₹<span id="simSl"></span></div>
+                    <div>Est. Target &#64; 40%: ₹<span id="simTp"></span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" disabled>Place (Paper) — Coming M4</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const simModal = document.getElementById('simModal');
+        simModal.addEventListener('show.bs.modal', event => {
+            const btn = event.relatedTarget;
+            const symbol = btn.getAttribute('data-symbol');
+            const side = btn.getAttribute('data-side');
+            const price = parseFloat(btn.getAttribute('data-price')) || 0;
+            document.getElementById('simSymbol').textContent = symbol;
+            document.getElementById('simSide').textContent = side;
+            document.getElementById('simPrice').textContent = price.toFixed(2);
+            document.getElementById('simSl').textContent = (price * 0.75).toFixed(2);
+            document.getElementById('simTp').textContent = (price * 1.40).toFixed(2);
+        });
+    </script>
+}

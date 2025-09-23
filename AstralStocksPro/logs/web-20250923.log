@@ -1,0 +1,805 @@
+2025-09-23 01:27:17.459 +05:30 [INF] Executed DbCommand (135ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE DATABASE "AstralStocksProDb";
+2025-09-23 01:27:17.564 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-09-23 01:27:17.596 +05:30 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 01:27:17.599 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 01:27:17.606 +05:30 [INF] Applying migration '20250922195628_InitialCreate'.
+2025-09-23 01:27:17.636 +05:30 [INF] Executed DbCommand (16ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+2025-09-23 01:27:17.639 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE risk_profiles (
+    "Id" uuid NOT NULL,
+    "Name" text NOT NULL,
+    "PerTradeRiskPct" numeric NOT NULL,
+    "DailyLossCapR" numeric NOT NULL,
+    "MaxConcurrent" integer NOT NULL,
+    "SlippageBps" integer NOT NULL,
+    "NoEntryAfter" time without time zone NOT NULL,
+    CONSTRAINT "PK_risk_profiles" PRIMARY KEY ("Id")
+);
+2025-09-23 01:27:17.642 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE signals (
+    "Id" uuid NOT NULL,
+    "Time" timestamp with time zone NOT NULL,
+    "Underlying" text NOT NULL,
+    "Side" integer NOT NULL,
+    "Strike" integer NOT NULL,
+    "Expiry" date NOT NULL,
+    "Confidence" numeric NOT NULL,
+    "OptionSymbol" text NOT NULL,
+    "ReasonJson" jsonb NOT NULL,
+    "StrategyId" uuid,
+    CONSTRAINT "PK_signals" PRIMARY KEY ("Id")
+);
+2025-09-23 01:27:17.644 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE strategies (
+    "Id" uuid NOT NULL,
+    "Name" text NOT NULL,
+    "Enabled" boolean NOT NULL,
+    "Mode" integer NOT NULL,
+    "AiThreshold" numeric NOT NULL,
+    "ConfigJson" jsonb NOT NULL,
+    "RiskProfileId" uuid,
+    CONSTRAINT "PK_strategies" PRIMARY KEY ("Id")
+);
+2025-09-23 01:27:17.645 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250922195628_InitialCreate', '8.0.11');
+2025-09-23 01:28:11.580 +05:30 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 01:28:11.628 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 01:28:11.688 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 01:28:11.748 +05:30 [INF] Executed DbCommand (51ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 01:28:11.750 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 01:28:11.757 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 01:28:11.865 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 01:28:11.899 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 01:28:11.983 +05:30 [INF] Executed DbCommand (34ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Decimal), @p2='?' (DbType = Int32), @p3='?', @p4='?' (DbType = Time), @p5='?' (DbType = Decimal), @p6='?' (DbType = Int32), @p7='?' (DbType = Guid), @p8='?' (DbType = Decimal), @p9='?' (DbType = Object), @p10='?' (DbType = Boolean), @p11='?' (DbType = Int32), @p12='?', @p13='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO risk_profiles ("Id", "DailyLossCapR", "MaxConcurrent", "Name", "NoEntryAfter", "PerTradeRiskPct", "SlippageBps")
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6);
+INSERT INTO strategies ("Id", "AiThreshold", "ConfigJson", "Enabled", "Mode", "Name", "RiskProfileId")
+VALUES (@p7, @p8, @p9, @p10, @p11, @p12, @p13);
+2025-09-23 01:28:12.051 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 01:28:12.071 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 01:28:12.105 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 01:28:12.105 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 01:28:12.105 +05:30 [INF] Hosting environment: Development
+2025-09-23 01:28:12.105 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 01:28:13.609 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 01:28:13.613 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 01:28:13.619 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 01:28:13.625 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 01:28:13.629 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 01:28:13.664 +05:30 [INF] Executed ViewResult - view Index executed in 35.5093ms.
+2025-09-23 01:28:13.665 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 40.0985ms
+2025-09-23 01:28:13.665 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 01:28:13.667 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 58.2041ms
+2025-09-23 01:28:13.667 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/css/site.css?v=pAGv4ietcJNk_EwsQZ5BN9-K4MuNYS2a9wl4Jw-q9D0 - null null
+2025-09-23 01:28:13.667 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/AstralStocksPro.styles.css?v=5jPNFZIi0u0FAvC7K-OYAqXEGy1wwjmwtbrd5X7Xz-I - null null
+2025-09-23 01:28:13.667 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - null null
+2025-09-23 01:28:13.668 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/favicon.ico - null null
+2025-09-23 01:28:13.671 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/lib/bootstrap/dist/js/bootstrap.bundle.min.js - null null
+2025-09-23 01:28:13.674 +05:30 [INF] The file /favicon.ico was not modified
+2025-09-23 01:28:13.674 +05:30 [INF] The file /css/site.css was not modified
+2025-09-23 01:28:13.674 +05:30 [INF] The file /lib/bootstrap/dist/js/bootstrap.bundle.min.js was not modified
+2025-09-23 01:28:13.674 +05:30 [INF] The file /AstralStocksPro.styles.css was not modified
+2025-09-23 01:28:13.674 +05:30 [INF] The file /js/site.js was not modified
+2025-09-23 01:28:13.674 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/favicon.ico - 304 null image/x-icon 6.2095ms
+2025-09-23 01:28:13.674 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/css/site.css?v=pAGv4ietcJNk_EwsQZ5BN9-K4MuNYS2a9wl4Jw-q9D0 - 304 null text/css 7.3343ms
+2025-09-23 01:28:13.674 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/lib/bootstrap/dist/js/bootstrap.bundle.min.js - 304 null text/javascript 3.5006ms
+2025-09-23 01:28:13.772 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/js/site.js?v=hRQyftXiu1lLX2P9Ly9xa4gHJgLeR1uGN5qegUobtGo - 304 null text/javascript 7.0827ms
+2025-09-23 01:28:13.772 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/AstralStocksPro.styles.css?v=5jPNFZIi0u0FAvC7K-OYAqXEGy1wwjmwtbrd5X7Xz-I - 304 null text/css 32.5753ms
+2025-09-23 01:28:13.772 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/lib/bootstrap/dist/css/bootstrap.min.css - null null
+2025-09-23 01:28:13.772 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/lib/jquery/dist/jquery.min.js - null null
+2025-09-23 01:28:13.772 +05:30 [INF] The file /lib/jquery/dist/jquery.min.js was not modified
+2025-09-23 01:28:13.772 +05:30 [INF] The file /lib/bootstrap/dist/css/bootstrap.min.css was not modified
+2025-09-23 01:28:13.772 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/lib/jquery/dist/jquery.min.js - 304 null text/javascript 0.2369ms
+2025-09-23 01:28:13.772 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/lib/bootstrap/dist/css/bootstrap.min.css - 304 null text/css 0.3691ms
+2025-09-23 01:28:52.823 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 01:28:52.828 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 01:28:52.831 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 01:28:52.832 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 01:28:52.837 +05:30 [INF] Executed ViewResult - view Index executed in 5.1179ms.
+2025-09-23 01:28:52.837 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 6.1295ms
+2025-09-23 01:28:52.837 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 01:28:52.837 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 15.6515ms
+2025-09-23 01:28:58.891 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 01:28:58.895 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 01:28:58.908 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 01:28:58.932 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 01:28:59.013 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 104.4651ms
+2025-09-23 01:28:59.013 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 01:28:59.015 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.get_Model()
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 01:28:59.054 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 162.7172ms
+2025-09-23 09:59:57.181 +05:30 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 09:59:57.259 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 09:59:57.275 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 09:59:57.287 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 09:59:57.288 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 09:59:57.293 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 09:59:57.444 +05:30 [INF] Executed DbCommand (49ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 09:59:57.460 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 09:59:57.527 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 09:59:57.546 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 09:59:57.577 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 09:59:57.578 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 09:59:57.578 +05:30 [INF] Hosting environment: Development
+2025-09-23 09:59:57.578 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:00:00.561 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:00:00.574 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:00:00.587 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:00:00.605 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:00:00.614 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:00:00.656 +05:30 [INF] Executed ViewResult - view Index executed in 44.5351ms.
+2025-09-23 10:00:00.657 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 52.3807ms
+2025-09-23 10:00:00.658 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:00:00.660 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 100.9038ms
+2025-09-23 10:00:46.170 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:00:46.178 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:00:46.189 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:00:46.212 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:00:46.286 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 97.3071ms
+2025-09-23 10:00:46.287 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:00:46.288 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.get_Model()
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:00:46.323 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 153.1389ms
+2025-09-23 10:01:09.092 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:01:09.096 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:01:09.097 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:02:01.785 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:02:01.805 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 52709.0374ms
+2025-09-23 10:02:01.806 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:02:01.806 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.get_Model()
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:02:01.816 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 52725.1712ms
+2025-09-23 10:03:18.566 +05:30 [INF] Executed DbCommand (38ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:03:18.643 +05:30 [INF] Executed DbCommand (28ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:03:18.685 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:03:18.696 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:03:18.697 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:03:18.703 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 10:03:18.807 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 10:03:18.817 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 10:03:18.874 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 10:03:18.895 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 10:03:18.956 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 10:03:18.957 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 10:03:18.957 +05:30 [INF] Hosting environment: Development
+2025-09-23 10:03:18.957 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:03:19.837 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:03:19.841 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:03:19.847 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:03:19.852 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:03:19.856 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:03:19.884 +05:30 [INF] Executed ViewResult - view Index executed in 28.5523ms.
+2025-09-23 10:03:19.885 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 33.0312ms
+2025-09-23 10:03:19.885 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:03:19.887 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 50.2371ms
+2025-09-23 10:03:21.566 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:03:21.569 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:03:21.577 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:03:24.280 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:03:24.316 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 2738.847ms
+2025-09-23 10:03:24.316 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:03:24.317 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:03:24.347 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 2781.3495ms
+2025-09-23 10:03:45.879 +05:30 [INF] Executed DbCommand (31ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:03:45.923 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:03:45.977 +05:30 [INF] Executed DbCommand (31ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:03:46.015 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:03:46.016 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:03:46.022 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 10:03:46.121 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 10:03:46.131 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 10:03:46.188 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 10:03:46.204 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 10:03:46.237 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 10:03:46.237 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 10:03:46.237 +05:30 [INF] Hosting environment: Development
+2025-09-23 10:03:46.237 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:03:46.544 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:03:46.548 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:03:46.608 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:03:46.632 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:03:46.637 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:03:46.673 +05:30 [INF] Executed ViewResult - view Index executed in 36.8991ms.
+2025-09-23 10:03:46.675 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 42.3199ms
+2025-09-23 10:03:46.675 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:03:46.678 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 133.6946ms
+2025-09-23 10:03:49.317 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:03:49.322 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:03:49.333 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:03:52.240 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:03:52.276 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 2940.473ms
+2025-09-23 10:03:52.276 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:03:52.277 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:03:52.302 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 2983.0586ms
+2025-09-23 10:05:56.451 +05:30 [INF] Executed DbCommand (33ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:05:56.495 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:05:56.535 +05:30 [INF] Executed DbCommand (27ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:05:56.549 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:05:56.571 +05:30 [INF] Executed DbCommand (22ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:05:56.577 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 10:05:56.687 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 10:05:56.697 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 10:05:56.759 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 10:05:56.779 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 10:05:56.814 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 10:05:56.815 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 10:05:56.815 +05:30 [INF] Hosting environment: Development
+2025-09-23 10:05:56.815 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:05:57.153 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:05:57.157 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:05:57.172 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:05:57.179 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:05:57.187 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:05:57.216 +05:30 [INF] Executed ViewResult - view Index executed in 30.5199ms.
+2025-09-23 10:05:57.224 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 43.9029ms
+2025-09-23 10:05:57.225 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:05:57.231 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 112.7053ms
+2025-09-23 10:05:58.938 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:05:58.942 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:05:58.950 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:06:03.976 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:06:04.018 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 5067.5777ms
+2025-09-23 10:06:04.019 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:06:04.019 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.get_Model()
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:06:04.074 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 5136.4601ms
+2025-09-23 10:06:59.224 +05:30 [INF] Executed DbCommand (35ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:06:59.266 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:06:59.308 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:06:59.340 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:06:59.341 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:06:59.348 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 10:06:59.449 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 10:06:59.484 +05:30 [INF] Executed DbCommand (25ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 10:06:59.542 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 10:06:59.562 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 10:06:59.590 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 10:06:59.590 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 10:06:59.590 +05:30 [INF] Hosting environment: Development
+2025-09-23 10:06:59.591 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:06:59.937 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:06:59.940 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:06:59.946 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:06:59.957 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:06:59.961 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:06:59.996 +05:30 [INF] Executed ViewResult - view Index executed in 35.4471ms.
+2025-09-23 10:06:59.998 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 40.7435ms
+2025-09-23 10:06:59.998 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:07:00.005 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 68.2549ms
+2025-09-23 10:07:01.944 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:07:01.948 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:07:01.954 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:07:41.269 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:07:41.314 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 39358.1477ms
+2025-09-23 10:07:41.315 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:07:41.315 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.get_Model()
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync() in /Users/manumohan/Projects/acd-trading-application/AstralStocksPro/Views/Chain/Index.cshtml:line 4
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:07:41.344 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 39401.1556ms
+2025-09-23 10:08:45.673 +05:30 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:08:45.717 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:08:45.733 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:08:45.785 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:08:45.833 +05:30 [INF] Executed DbCommand (48ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:08:45.839 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 10:08:45.944 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 10:08:45.954 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 10:08:46.016 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 10:08:46.036 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 10:08:46.072 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 10:08:46.073 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 10:08:46.073 +05:30 [INF] Hosting environment: Development
+2025-09-23 10:08:46.073 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:08:46.333 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:08:46.337 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:08:46.344 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:08:46.349 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:08:46.355 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:08:46.406 +05:30 [INF] Executed ViewResult - view Index executed in 36.9701ms.
+2025-09-23 10:08:46.407 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 57.6772ms
+2025-09-23 10:08:46.407 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:08:46.409 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 78.4752ms
+2025-09-23 10:08:48.158 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:08:48.161 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:08:48.171 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:08:51.837 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:08:51.875 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 3703.8695ms
+2025-09-23 10:08:51.876 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:08:51.876 +05:30 [ERR] An unhandled exception has occurred while executing the request.
+System.NullReferenceException: Object reference not set to an instance of an object.
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.get_Model()
+   at AspNetCoreGeneratedDocument.Views_Chain_Index.ExecuteAsync()
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageCoreAsync(IRazorPage page, ViewContext context)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderPageAsync(IRazorPage page, ViewContext context, Boolean invokeViewStarts)
+   at Microsoft.AspNetCore.Mvc.Razor.RazorView.RenderAsync(ViewContext context)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ViewContext viewContext, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewExecutor.ExecuteAsync(ActionContext actionContext, IView view, ViewDataDictionary viewData, ITempDataDictionary tempData, String contentType, Nullable`1 statusCode)
+   at Microsoft.AspNetCore.Mvc.ViewFeatures.ViewResultExecutor.ExecuteAsync(ActionContext context, ViewResult result)
+   at Microsoft.AspNetCore.Mvc.ViewResult.ExecuteResultAsync(ActionContext context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResultFilterAsync>g__Awaited|30_0[TFilter,TFilterAsync](ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResultExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.ResultNext[TFilter,TFilterAsync](State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeResultFilters()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Logged|17_1(ResourceInvoker invoker)
+   at Microsoft.AspNetCore.Routing.EndpointMiddleware.<Invoke>g__AwaitRequestTask|7_0(Endpoint endpoint, Task requestTask, ILogger logger)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-09-23 10:08:51.904 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 500 null text/html; charset=utf-8 3746.2136ms
+2025-09-23 10:10:50.566 +05:30 [INF] Executed DbCommand (32ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:10:50.608 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:10:50.649 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:10:50.689 +05:30 [INF] Executed DbCommand (26ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1 FROM pg_catalog.pg_class c
+    JOIN pg_catalog.pg_namespace n ON n.oid=c.relnamespace
+    WHERE n.nspname='public' AND
+          c.relname='__EFMigrationsHistory'
+)
+2025-09-23 10:10:50.690 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-09-23 10:10:50.697 +05:30 [INF] No migrations were applied. The database is already up to date.
+2025-09-23 10:10:50.799 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM risk_profiles AS r)
+2025-09-23 10:10:50.809 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT EXISTS (
+    SELECT 1
+    FROM strategies AS s)
+2025-09-23 10:10:50.867 +05:30 [INF] User profile is available. Using '/Users/manumohan/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-09-23 10:10:50.887 +05:30 [INF] ChainCacheService started for 1 underlyings
+2025-09-23 10:10:50.918 +05:30 [INF] Now listening on: http://localhost:5058
+2025-09-23 10:10:50.918 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-09-23 10:10:50.918 +05:30 [INF] Hosting environment: Development
+2025-09-23 10:10:50.918 +05:30 [INF] Content root path: /Users/manumohan/Projects/acd-trading-application/AstralStocksPro
+2025-09-23 10:10:51.161 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/ - null null
+2025-09-23 10:10:51.166 +05:30 [WRN] Failed to determine the https port for redirect.
+2025-09-23 10:10:51.172 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:10:51.180 +05:30 [INF] Route matched with {action = "Index", controller = "Dashboard"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.ActionResult Index() on controller AstralStocksPro.Controllers.DashboardController (AstralStocksPro).
+2025-09-23 10:10:51.190 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:10:51.295 +05:30 [INF] Executed ViewResult - view Index executed in 90.3282ms.
+2025-09-23 10:10:51.302 +05:30 [INF] Executed action AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro) in 121.0327ms
+2025-09-23 10:10:51.302 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.DashboardController.Index (AstralStocksPro)'
+2025-09-23 10:10:51.305 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/ - 200 null text/html; charset=utf-8 146.9821ms
+2025-09-23 10:10:52.808 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - null null
+2025-09-23 10:10:52.813 +05:30 [INF] Executing endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:10:52.823 +05:30 [INF] Route matched with {action = "Index", controller = "Chain"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index(System.String) on controller AstralStocksPro.Controllers.ChainController (AstralStocksPro).
+2025-09-23 10:10:55.109 +05:30 [INF] Executing ViewResult, running view Index.
+2025-09-23 10:10:55.121 +05:30 [INF] Executed ViewResult - view Index executed in 13.3264ms.
+2025-09-23 10:10:55.121 +05:30 [INF] Executed action AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro) in 2297.3132ms
+2025-09-23 10:10:55.121 +05:30 [INF] Executed endpoint 'AstralStocksPro.Controllers.ChainController.Index (AstralStocksPro)'
+2025-09-23 10:10:55.121 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5058/Chain?symbol=NIFTY - 200 null text/html; charset=utf-8 2313.8045ms
