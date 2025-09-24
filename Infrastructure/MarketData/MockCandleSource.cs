@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Domain.Trading;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.MarketData;
 
@@ -8,7 +9,12 @@ public sealed class MockCandleSource : ICandleSource
 {
     private readonly string _basePath;
     private readonly JsonSerializerOptions _opts = new() { PropertyNameCaseInsensitive = true };
-    public MockCandleSource(IConfiguration cfg) { _basePath = cfg["Data:MockCandlePath"] ?? "App_Data"; }
+    public MockCandleSource(IConfiguration cfg,IHostEnvironment env)
+    {
+        var configured = cfg["Data:MockCandlePath"] ?? "App_Data";
+        _basePath = Path.IsPathRooted(configured) ? configured : Path.Combine(env.ContentRootPath, configured);
+    
+    }
 
     public async Task<IReadOnlyList<Candle>> GetCandlesAsync(string underlying, string interval, int limit, CancellationToken ct = default)
     {

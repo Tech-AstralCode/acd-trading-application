@@ -11,23 +11,39 @@ public sealed class CrossoverStrategy : IStrategy
 
     public Task<IReadOnlyList<StrategySignal>> GenerateAsync(MarketContext ctx, StrategyConfig cfg, CancellationToken ct)
     {
+        // var p = cfg.Params;
+        // var fast = int.Parse(p.GetValueOrDefault("FastEMA", "9"));
+        // var slow = int.Parse(p.GetValueOrDefault("SlowEMA", "21"));
+        // var minMom = double.Parse(p.GetValueOrDefault("MinMomentum", "0.25"));
+        // var bias = p.GetValueOrDefault("StrikeBias", "ATM");
+
         var p = cfg.Params;
-        var fast = int.Parse(p.GetValueOrDefault("FastEMA", "9"));
-        var slow = int.Parse(p.GetValueOrDefault("SlowEMA", "21"));
-        var minMom = double.Parse(p.GetValueOrDefault("MinMomentum", "0.25"));
+        var fast = int.Parse(p.GetValueOrDefault("FastEMA", "2"));
+        var slow = int.Parse(p.GetValueOrDefault("SlowEMA", "4"));
         var bias = p.GetValueOrDefault("StrikeBias", "ATM");
+        double.TryParse(p.GetValueOrDefault("MinMomentum", "0"), out var minMom);
+        var useMom = minMom > 0;
 
         if (ctx.Candles.Count < Math.Max(fast, slow) + 2)
             return Task.FromResult<IReadOnlyList<StrategySignal>>(Array.Empty<StrategySignal>());
 
+        // var closes = ctx.Candles.Select(c => c.Close).ToList();
+        // var emaF = TA.Ema(closes, fast);
+        // var emaS = TA.Ema(closes, slow);
+        // var mom = TA.Momentum(closes, 10);
+        // int i = closes.Count - 1;
+
+        // bool bullCross = emaF[i] > emaS[i] && emaF[i - 1] <= emaS[i - 1] && mom[i] > minMom;
+        // bool bearCross = emaF[i] < emaS[i] && emaF[i - 1] >= emaS[i - 1] && mom[i] < -minMom;
+
         var closes = ctx.Candles.Select(c => c.Close).ToList();
-        var emaF = TA.Ema(closes, fast);
-        var emaS = TA.Ema(closes, slow);
-        var mom = TA.Momentum(closes, 10);
+        var emaF = Application.Indicators.TA.Ema(closes, fast);
+        var emaS = Application.Indicators.TA.Ema(closes, slow);
+        var mom = Application.Indicators.TA.Momentum(closes, 10);
         int i = closes.Count - 1;
 
-        bool bullCross = emaF[i] > emaS[i] && emaF[i-1] <= emaS[i-1] && mom[i] > minMom;
-        bool bearCross = emaF[i] < emaS[i] && emaF[i-1] >= emaS[i-1] && mom[i] < -minMom;
+        bool bullCross = emaF[i] > emaS[i] && emaF[i - 1] <= emaS[i - 1] && (!useMom || mom[i] > minMom);
+        bool bearCross = emaF[i] < emaS[i] && emaF[i - 1] >= emaS[i - 1] && (!useMom || mom[i] < -minMom);
 
         if (!bullCross && !bearCross)
             return Task.FromResult<IReadOnlyList<StrategySignal>>(Array.Empty<StrategySignal>());

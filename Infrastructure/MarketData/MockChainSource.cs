@@ -1,6 +1,7 @@
 using System.Text.Json;
 using Domain.Trading;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.MarketData;
 
@@ -8,9 +9,11 @@ public sealed class MockChainSource : IChainSource
 {
     private readonly string _basePath;
 
-    public MockChainSource(IConfiguration config)
+    public MockChainSource(IConfiguration config, IHostEnvironment env)
     {
-        _basePath = config["Data:MockChainPath"] ?? "App_Data";
+        var configured = config["Data:MockChainPath"] ?? "App_Data";
+        // Resolve relative to ContentRoot so it works on macOS & debug without copying
+        _basePath = Path.IsPathRooted(configured) ? configured : Path.Combine(env.ContentRootPath, configured);
     }
 
     public async Task<ChainSnapshot?> GetSnapshotAsync(string underlying, CancellationToken ct = default)
@@ -18,6 +21,7 @@ public sealed class MockChainSource : IChainSource
         var file = Path.Combine(_basePath, $"chain_{underlying.ToUpperInvariant()}.json");
         if (!File.Exists(file)) return null;
         await using var fs = File.OpenRead(file);
+
         var dto = await JsonSerializer.DeserializeAsync<ChainFileDto>(fs, cancellationToken: ct);
         if (dto == null) return null;
 

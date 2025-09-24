@@ -17,7 +17,6 @@ public sealed class SignalWorker : BackgroundService
         _sp = sp;
         _underlyings = cfg.GetSection("Trading:Underlyings").Get<string[]>() ?? new[] { "NIFTY" };
         _every = TimeSpan.FromSeconds(cfg.GetValue("Signals:EverySeconds", 5));
-        
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -26,16 +25,9 @@ public sealed class SignalWorker : BackgroundService
         {
             foreach (var u in _underlyings)
             {
-                try
-                {
-                    using var scope = _sp.CreateScope();
-                    var runner = scope.ServiceProvider.GetRequiredService<IStrategyRunner>();
-                    await runner.RunOnceAsync(u, stoppingToken);
-                }
-                catch
-                {
-                    
-                }
+                using var scope = _sp.CreateScope();
+                var runner = scope.ServiceProvider.GetRequiredService<IStrategyRunner>();
+                await runner.RunOnceAsync(u, stoppingToken);
             }
             await Task.Delay(_every, stoppingToken);
         }
