@@ -1,3 +1,4 @@
+using Application.Abstractions;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ public static class DependencyInjection
             opt.UseNpgsql(cs, npg => npg.EnableRetryOnFailure());
         });
 
+        services.AddScoped<ITradingRepository, TradingRepository>();
         // Serilog (wired in Program.cs)
         return services;
     }

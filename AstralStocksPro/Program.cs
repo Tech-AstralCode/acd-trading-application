@@ -3,6 +3,10 @@ using Infrastructure.MarketData;
 using Infrastructure.Persistence;
 using Application.Services;
 using Serilog;
+using Domain.Strategies;
+using Infrastructure.Strategies;
+using Application.Strategies;
+using Infrastructure.Workers;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -29,9 +33,21 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // Market data mock + cache worker
 builder.Services.AddSingleton<IChainSource, MockChainSource>();
 builder.Services.AddHostedService<ChainCacheService>();
-
-// Application services
+// Services for queries
 builder.Services.AddSingleton<IChainQueryService, ChainQueryService>();
+builder.Services.AddSingleton<ICandleQueryService, CandleQueryService>();
+// Market data
+builder.Services.AddSingleton<ICandleSource, MockCandleSource>();
+builder.Services.AddHostedService<CandleCacheService>();
+// Strategies
+builder.Services.AddSingleton<IStrategy, CrossoverStrategy>();
+builder.Services.AddSingleton<IStrategyRegistry, StrategyRegistry>();
+// Runner + Worker
+builder.Services.AddScoped<IStrategyRunner, StrategyRunner>();
+builder.Services.AddHostedService<SignalWorker>();
+
+// Read service for controllers
+builder.Services.AddScoped<ISignalsReadService, SignalsReadService>();
 
 var app = builder.Build();
 

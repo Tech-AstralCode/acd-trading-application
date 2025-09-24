@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Application.Services.SignalRowDto>
+@{ ViewData["Title"] = "Signals"; }
+<h3>Signals</h3>
+<div class="table-responsive">
+<table class="table table-sm align-middle">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Underlying</th>
+      <th>Side</th>
+      <th>Strike</th>
+      <th>Expiry</th>
+      <th>Confidence</th>
+      <th>Symbol</th>
+      <th>Reason</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach (var s in Model)
+  {
+    <tr>
+      <td>@s.Time.ToLocalTime()</td>
+      <td>@s.Underlying</td>
+      <td class="@(s.Side == "Call" ? "text-success" : "text-danger")">@s.Side</td>
+      <td>@s.Strike</td>
+      <td>@s.Expiry.ToString("yyyy-MM-dd")</td>
+      <td>@s.Confidence.ToString("0.00")</td>
+      <td>@s.OptionSymbol</td>
+      <td>
+        <button class="btn btn-sm btn-outline-light" data-bs-toggle="collapse" data-bs-target="#r@(s.Id)">View</button>
+        <div class="collapse" id="r@(s.Id)"><pre class="mb-0">@s.ReasonJson</pre></div>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-secondary" disabled>Buy (M4)</button>
+        <button class="btn btn-sm btn-outline-warning" disabled>Ignore</button>
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>
+</div>

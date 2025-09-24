@@ -1,3 +1,4 @@
+using Application.Abstractions;
 using Domain.Config;
 using Domain.Signals;
 using Domain.Strategies;
