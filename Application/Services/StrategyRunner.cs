@@ -37,7 +37,7 @@ public sealed class StrategyRunner : IStrategyRunner
             var dict = JsonSerializer.Deserialize<Dictionary<string,string>>(s.ConfigJson) ?? new();
             var cfg = new StrategyConfig(dict);
 
-            var ctx = new MarketContext { Underlying = underlying, Candles = candles, Chain = chain, Now = DateTimeOffset.Now };
+            var ctx = new MarketContext { Underlying = underlying, Candles = candles, Chain = chain, Now = DateTimeOffset.UtcNow };
             var sigs = await impl.GenerateAsync(ctx, cfg, ct);
 
             foreach (var sig in sigs)
@@ -48,7 +48,7 @@ public sealed class StrategyRunner : IStrategyRunner
                 await _repo.AddSignalAsync(new Signal
                 {
                     Id = Guid.NewGuid(),
-                    Time = sig.Time,
+                    Time = sig.Time.ToUniversalTime(),
                     Underlying = sig.Underlying,
                     Side = sig.Side,
                     Strike = sig.Strike,

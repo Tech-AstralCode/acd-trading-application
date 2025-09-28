@@ -27,7 +27,16 @@ public sealed class SignalWorker : BackgroundService
             {
                 using var scope = _sp.CreateScope();
                 var runner = scope.ServiceProvider.GetRequiredService<IStrategyRunner>();
-                await runner.RunOnceAsync(u, stoppingToken);
+                try
+                {
+                    await runner.RunOnceAsync(u, stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (you can replace this with your logging framework)
+                    Console.WriteLine($"Error running strategy for {u}: {ex.Message}");
+                }
+                
             }
             await Task.Delay(_every, stoppingToken);
         }

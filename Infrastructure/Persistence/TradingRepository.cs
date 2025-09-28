@@ -17,7 +17,7 @@ public sealed class TradingRepository : ITradingRepository
 
     public async Task<bool> RecentSignalExistsAsync(string optionSymbol, TimeSpan lookback, CancellationToken ct = default)
     {
-        var since = DateTimeOffset.Now - lookback;
+        var since = DateTimeOffset.UtcNow - lookback;
         return await _db.Signals.AsNoTracking()
             .AnyAsync(x => x.OptionSymbol == optionSymbol && x.Time > since, ct);
     }

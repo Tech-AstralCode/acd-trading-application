@@ -18,6 +18,28 @@ public sealed class CrossoverStrategy : IStrategy
         // var bias = p.GetValueOrDefault("StrikeBias", "ATM");
 
         var p = cfg.Params;
+
+        var force = p.GetValueOrDefault("Force", "").ToUpperInvariant();
+        if (force is "CALL" or "PUT")
+        {
+            var pick1 = ctx.PickAtm(callPreference: force == "CALL", strikeOffset: 0);
+            if (pick1 is not null)
+            {
+                var (row1, strike1) = pick1.Value;
+                var sig1 = new StrategySignal(
+                    Time: ctx.Now,
+                    Underlying: ctx.Underlying,
+                    Side: force == "CALL" ? Domain.Signals.TradeSide.Call : Domain.Signals.TradeSide.Put,
+                    Strike: strike1,
+                    Expiry: row1.Expiry,
+                    Confidence: 0.66m,
+                    OptionSymbol: row1.Symbol,
+                    ReasonJson: "{\"forced\":true}"
+                );
+                return Task.FromResult<IReadOnlyList<StrategySignal>>(new[] { sig1 });
+            }
+        }
+
         var fast = int.Parse(p.GetValueOrDefault("FastEMA", "2"));
         var slow = int.Parse(p.GetValueOrDefault("SlowEMA", "4"));
         var bias = p.GetValueOrDefault("StrikeBias", "ATM");
